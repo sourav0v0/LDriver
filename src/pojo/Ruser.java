@@ -1,22 +1,10 @@
 package pojo;
 
-public class User {
+public class Ruser {
 	int pid;
 	String email;
 	String name;
 	String password;
-	String pri;
-	public User() {
-		
-	}
-	public User(String email, String name, String password, String pri,int pid) {
-		super();
-		this.pid=pid;
-		this.email = email;
-		this.name = name;
-		this.password = password;
-		this.pri = pri;
-	}
 	public int getPid() {
 		return pid;
 	}
@@ -41,15 +29,17 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getPri() {
-		return pri;
-	}
-	public void setPri(String pri) {
-		this.pri = pri;
+	
+	public Ruser(int pid, String email, String name, String password) {
+		super();
+		this.pid = pid;
+		this.email = email;
+		this.name = name;
+		this.password = password;
 	}
 	@Override
 	public String toString() {
-		return "User [email=" + email + ", name=" + name + ", password=" + password + ", pri=" + pri + "]";
+		return "User [email=" + email + ", name=" + name + ", password=" + password + "]";
 	}
 	
 }

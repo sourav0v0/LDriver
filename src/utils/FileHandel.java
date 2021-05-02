@@ -71,7 +71,7 @@ public class FileHandel {
         os.flush();
         os.close();
         fis.close();
-}
+	}
 	boolean valid(String name) {
 		String[] dis=name.split(".");
 		if(dis.length<=1)return false;

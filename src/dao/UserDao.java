@@ -8,5 +8,5 @@ public interface UserDao {
 	boolean updatePassword(String email,String pass,String newPass);
 	List<User> getUsers();
 	User searchUser(String email);
-
+	boolean validUser(String email,String pass);
 }
