@@ -12,21 +12,22 @@ public class PublicDaoImpl implements PublicDao{
 	Connection con=DbCon.getConnection();
 	@Override
 	public boolean requestAdmin(Ruser usr) {
-		String req="insert into ruser values(?,?,?,?)";
+		String req="insert into ruser (pid,email,name,password) values(?,?,?,?)";
 		String pass=getSaltString();
+		usr.setPassword(pass);
 		try {
 			PreparedStatement ps=con.prepareStatement(req);
 			ps.setInt(1,usr.getPid());
 			ps.setString(2,usr.getEmail());
 			ps.setString(3,usr.getName());
-			ps.setString(4,pass);
+			ps.setString(4,usr.getPassword());
 			int j=ps.executeUpdate();
 			return j>0;
 		}
 		catch(Exception x) {
-			x.printStackTrace();
+			return false;
 		}
-		return false;
+		
 	}
 	private String getSaltString() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";

@@ -18,12 +18,11 @@ public class UserDaoImpl implements UserDao{
 	public boolean addUser(User user) {
 		if(con==null)return false;
 		try {
-			PreparedStatement ps=con.prepareStatement("insert into user values (?,?,?,?)");
-			ps.setString(1,user.getEmail());
-			ps.setString(2,user.getName());
-			ps.setString(3,user.getPassword());
-			ps.setString(4,user.getPri());
-			System.out.println("herer e");
+			PreparedStatement ps=con.prepareStatement("insert into user(pid,email,name,password) values (?,?,?,?)");
+			ps.setInt(1,user.getPid());
+			ps.setString(2,user.getEmail());
+			ps.setString(3,user.getName());
+			ps.setString(4,user.getPassword());
 			return ps.executeUpdate()>0;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -56,7 +55,7 @@ public class UserDaoImpl implements UserDao{
 		User user=new User(); 
 		user.setName(rs.getString("name"));
 		user.setEmail(rs.getString("email"));
-		user.setPri(rs.getString("pri"));
+		user.setPid(rs.getInt("pid"));
 		rtn.add(user);
 		}
 		return rtn;
@@ -78,8 +77,7 @@ public class UserDaoImpl implements UserDao{
 			user.setName(rs.getString("name"));
 			user.setEmail(rs.getString("email"));
 			user.setPassword("");
-			user.setPri(rs.getString("pri"));
-			
+			user.setPid(rs.getInt("pid"));
 			return user;
 			}
 			return null;	
