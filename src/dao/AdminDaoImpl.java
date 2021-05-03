@@ -23,7 +23,7 @@ public class AdminDaoImpl implements AdminDao{
 	static Connection con=DbCon.getConnection();
 	@Override
 	public boolean validAdmin(String email, String pass) {
-		String query="select * from admin where email=? and pass=?";
+		String query="select * from admin where email=? and password=?";
 		try {
 			PreparedStatement ps=con.prepareStatement(query);
 			ps.setString(1,email);
@@ -110,14 +110,41 @@ public class AdminDaoImpl implements AdminDao{
 
 	}
 	@Override
-	public boolean deleteRuser(Ruser r) {
+	public boolean deleteRuser(String email) {
 		if(con==null)return false;
 		try {
 			PreparedStatement ps=con.prepareStatement("delete from ruser where email =?");
-			ps.setString(1, r.getEmail());
+			ps.setString(1, email);
 			return ps.executeUpdate()>0;
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+		return false;
+	}
+	@Override
+	public boolean addAdmin(String email, String pass) {
+		String query="insert into admin (email,password) values(?,?)";
+		try {
+			PreparedStatement ps=con.prepareStatement(query);
+			ps.setString(1,email);
+			ps.setString(2,pass);
+			return ps.executeUpdate()>0;
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+	@Override
+	public boolean removeAdmin(String email) {
+		String query="delete from admin where email = ?";
+		try {
+			PreparedStatement ps=con.prepareStatement(query);
+			ps.setString(1,email);
+			return ps.executeUpdate()>0;
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
 		}
 		return false;
 	}

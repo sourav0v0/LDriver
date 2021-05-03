@@ -1,10 +1,11 @@
 package pojo;
 
 public class Ruser {
-	int pid;
-	String email;
-	String name;
-	String password;
+	private int pid;
+	private String email;
+	private String name;
+	private String password;
+
 	public int getPid() {
 		return pid;
 	}

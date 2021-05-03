@@ -94,10 +94,9 @@ public class UserDaoImpl implements UserDao{
 			ps.setString(1, email);
 			ResultSet rs=ps.executeQuery();
 			if(rs==null)return false;
-			//System.out.println(rs.next());
 			if(rs.next()) {
 			String fp=rs.getString("password");
-			if(fp==null)fp="123";
+			if(fp==null)return false;
 			System.out.println(fp);
 			if(fp.equals(pass))return true;
 			}

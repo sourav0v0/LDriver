@@ -10,13 +10,20 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import dao.FileDaoImpl;
+
 public class FileHandel {
-	private final String path= "C:\\Users\\soura\\Desktop\\";
+	public final static String path= "C:\\Users\\soura\\Desktop\\files\\";
 	public boolean uploadFile(HttpServletRequest request) {
+		FileDaoImpl fdi =new FileDaoImpl();
+		HttpSession session = request.getSession();
+		String email=(String) session.getAttribute("email");
 		if(ServletFileUpload.isMultipartContent(request)){
             try {
                 List <FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
@@ -24,6 +31,7 @@ public class FileHandel {
                     if(!item.isFormField()){
                     	System.out.println("In");
                         String name = new File(item.getName()).getName();
+                        System.out.println(fdi.postName(email, name)+" | File Name posted in DB");
                         item.write( new File(path + File.separator + name));
                     }
                 }
@@ -57,12 +65,12 @@ public class FileHandel {
 	        return true;
 	}
 	public void playContent(ServletContext ctx,HttpServletResponse response,String fileName) throws Exception   {
-        File file = new File(path+fileName	);
+        File file = new File(path+fileName);
         if(!file.exists()){
             throw new FileNotFoundException();
         }
         InputStream fis = new FileInputStream(file);
-        ServletOutputStream os       = response.getOutputStream();
+        ServletOutputStream os= response.getOutputStream();
         byte[] bufferData = new byte[2048];
         int read=0;
         while((read = fis.read(bufferData))!= -1){
