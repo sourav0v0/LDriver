@@ -12,28 +12,29 @@
   <div class="container p-2">
     <form action="User" method="post">
     <input type="hidden" name="action" value="changePassword"> 
+    <input type="hidden" name="emails" value="<%=session.getAttribute("email")%>"> 
       <div class="mb-3 row" >
-        <label for="Name" class="col-sm-2 col-form-label">Email</label>
+        <label for="email" class="col-sm-2 col-form-label">Email</label>
         <div class="col-sm-6">
-          <input type="text" name="email" id="Name" placeholder="Sourav Prajapati" class="form-control-plaintext rounded border border-dark" disabled="disabled" value="<%=session.getAttribute("email")%>">
+          <input type="text" name="email" id="email"  class="form-control-plaintext rounded border border-dark" disabled="disabled" value="<%=session.getAttribute("email")%>">
         </div>
       </div>
       <div class="mb-3 row" >
         <label for="L" class="col-sm-2 col-form-label">Old Password</label>
         <div class="col-sm-6">
-          <input type="password" name="pass" class="form-control-plaintext rounded border border-dark" required>
+          <input type="password" name="pass" class="form-control-plaintext rounded border border-dark" required/>
         </div>
       </div>
       <div class="mb-3 row" >
         <label for="L" class="col-sm-2 col-form-label">New Password</label>
         <div class="col-sm-6">
-          <input type="password" id="phone" class="form-control-plaintext rounded border border-dark" required>
+          <input type="password" id="phone" class="form-control-plaintext rounded border border-dark" required/>
         </div>
       </div>
       <div class="mb-3 row" >
         <label for="L" class="col-sm-2 col-form-label">Confirm Password</label>
         <div class="col-sm-6">
-          <input type="password" name="cpass" class="form-control-plaintext rounded border border-dark" required>
+          <input type="password" name="cpass" class="form-control-plaintext rounded border border-dark" required/>
         </div>
       </div>
       <div class="col-12">

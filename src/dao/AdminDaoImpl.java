@@ -56,7 +56,7 @@ public class AdminDaoImpl implements AdminDao{
 	}
 	@Override
 	public boolean createUser(Ruser user) {
-		if(con==null)return false;
+		if(con==null || user==null)return false;
 		try {
 			PreparedStatement ps=con.prepareStatement("delete from ruser where email =?");
 			ps.setString(1, user.getEmail());

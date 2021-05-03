@@ -36,7 +36,20 @@ else{%>
       <td><%=f.getName().toUpperCase()%></td>
       <td><a href="FileController?action=download&fid=<%=f.getId()%>" class="btn btn-primary">Download</a></td>
       <td><a href="FileController?action=view&fid=<%=f.getId()%>" target="_blank"  class="btn btn-primary">View</a></td>
-      <td><a href="FileController?action=generate&fid=<%=f.getId()%>" class="btn btn-primary">Generate Qr Code</a></td>
+      <td>
+    <div class="dropdown"> 
+  	<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+    Share
+  	</button>
+  	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    	<li><a class="dropdown-item" href="FileController?action=generate&fid=<%=f.getId()%>&type=link">Link</a></li>
+    	<li><a class="dropdown-item" href="FileController?action=generate&fid=<%=f.getId()%>&type=image">Image</a></li>
+  	</ul>
+	</div>
+      <%-- <a href="FileController?action=generate&fid=<%=f.getId()%>" class="btn btn-primary">Share</a> --%>
+      </td>
+      
+      
     </tr>   
 <% }}} %>
   </tbody>

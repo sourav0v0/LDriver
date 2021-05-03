@@ -11,7 +11,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" ></script>
 </head>
 <body>
-
 <% String type=(String)session.getAttribute("type"); 
 if(type !=null && type.equals("employee")){ %>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -42,8 +41,10 @@ if(type !=null && type.equals("employee")){ %>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">  
         <a class="nav-link " aria-current="page" href="index.jsp">Home</a>
-        <a class="nav-link" href="#">Process Requested User</a>
-        <a class="nav-link" href="#">Logout</a>
+        <a class="nav-link" href="AdminController?action=list">Process Requested User</a>
+        <a class="nav-link" href="#">Add Admin</a>
+        <a class="nav-link" href="#">Remove Admin</a>
+        <a class="nav-link" href="Main?action=logout">Logout</a>
       </div>
     </div>
   </div>

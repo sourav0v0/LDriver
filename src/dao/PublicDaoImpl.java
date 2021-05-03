@@ -1,5 +1,6 @@
 package dao;
 
+import java.io.PrintWriter;
 import java.sql.Connection;
 
 import java.sql.PreparedStatement;
@@ -40,4 +41,12 @@ public class PublicDaoImpl implements PublicDao{
         String saltStr = salt.toString();
         return saltStr;
     }
+	@Override
+	public void alertSuccess(String message, PrintWriter out) {
+		out.print("<div class='alert alert-success alert-dismissible fade show' role='alert'>");
+		out.print("<strong> "+message+" </strong>");
+		out.print("<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>");
+		out.print("</div>");  
+	}
+	
 }

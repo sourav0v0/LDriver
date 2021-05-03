@@ -24,22 +24,34 @@ public class LoginController extends HttpServlet {
 		String email=req.getParameter("email");
 		String pas=req.getParameter("password");
 		System.out.println(s+"| "+email+" | "+pas);
-		if(s.equals("Admin")) {
+		System.out.println(s);
+		if(s.equals("admin")) {
 			AdminDaoImpl adi=new AdminDaoImpl();
 			if(adi.validAdmin(email, pas))
 			{
+				
 				session.setAttribute("type", "admin");
 				resp.sendRedirect("index.jsp");
 			}
+			else {
+				resp.sendRedirect("index.jsp");
+			}
 		}
-		else {
+		else if(s.equals("employee")){
 			UserDaoImpl udi=new UserDaoImpl();
 			if(udi.validUser(email, pas)) {
 			session.setAttribute("type", "employee");
 			session.setAttribute("email", email);
 			resp.sendRedirect("index.jsp");
 			}
+			else {
+				resp.sendRedirect("index.jsp");
+			}
 		}
+		else {
+			resp.sendRedirect("index.jsp");
+		}
+			
 	}
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -49,7 +61,8 @@ public class LoginController extends HttpServlet {
 		//String phone=req.getParameter("phone");
 		Ruser ruser=new Ruser(id, email, name,"");
 		PublicDaoImpl pdi=new PublicDaoImpl();
-		pdi.requestAdmin(ruser);
-		resp.sendRedirect("index.html");
+		System.out.println(ruser);
+		System.out.println(pdi.requestAdmin(ruser)+ " reuesetd Adin");
+		resp.sendRedirect("index.jsp");
 	}
 }

@@ -29,27 +29,22 @@
       <div class="mb-3 row" >
         <label for="cid" class="col-sm-2 col-form-label">Company Id</label>
         <div class="col-sm-6">
-          <input type="text" id="cid" placeholder="sapwrd12gLm"  class="form-control-plaintext rounded border border-dark" required>
+          <input type="text" name="cid" id="cid" placeholder="sapwrd12gLm"  class="form-control-plaintext rounded border border-dark" required>
         </div>
       </div>
       <div class="mb-3 row" >
         <label for="Mail" class="col-sm-2 col-form-label">Email</label>
         <div class="col-sm-6">
-          <input type="email" id="email"  placeholder="email@example.com" class="form-control-plaintext rounded border border-dark" required>
+          <input type="email" name="email"id="email"  placeholder="email@example.com" class="form-control-plaintext rounded border border-dark" required>
         </div>
       </div>
       <div class="mb-3 row" >
         <label for="Name" class="col-sm-2 col-form-label">Full Name</label>
         <div class="col-sm-6">
-          <input type="text" id="Name" placeholder="Sourav Prajapati" class="form-control-plaintext rounded border border-dark" required>
+          <input type="text" name="name" id="Name" placeholder="Sourav Prajapati" class="form-control-plaintext rounded border border-dark" required>
         </div>
       </div>
-      <div class="mb-3 row" >
-        <label for="L" class="col-sm-2 col-form-label">Phone Number</label>
-        <div class="col-sm-6">
-          <input type="number" id="phone"  placeholder="8976505050" class="form-control-plaintext rounded border border-dark" required>
-        </div>
-      </div>
+      
       <div class="col-12">
         <button type="submit" class="btn btn-primary">Request For Account</button>
       </div>

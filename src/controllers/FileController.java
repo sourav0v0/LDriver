@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -45,7 +46,14 @@ public class FileController extends HttpServlet {
 		FileDaoImpl fdi=new FileDaoImpl();
 		if(action!=null && action.equals("generate"))
 		{
-			System.out.println("GENERATE");
+			String pid=request.getParameter("fid");
+			String type=request.getParameter("type");
+			if(type!=null && type.equals("image"))
+				System.out.println("Impage");
+			//out.println("<img src=\"https://api.qrserver.com/v1/create-qr-code/?data='http://192.168.0.109:8080/Final/FileController?action=download&fid="+pid+"'&amp;size=100x100\" alt=\"\" title=\"\" />");
+			else
+				System.out.println("IP link");
+				//out.print("http://192.168.0.109:8080/Final/FileController?action=download&fid="+pid);
 		}
 		else if(action!=null && action.equals("download")) {
 			System.out.println("Download");
