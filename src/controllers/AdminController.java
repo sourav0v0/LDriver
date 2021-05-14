@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.AdminDaoImpl;
-import dao.RuserDoaImpl;
-import pojo.Ruser;
+import dao.UserDaoImpl;
+import pojo.User;
 
 /**
  * Servlet implementation class AdminController
@@ -36,18 +36,18 @@ public class AdminController extends HttpServlet {
 		String action=request.getParameter("action");
 		HttpSession session=request.getSession();
 		AdminDaoImpl adi=new AdminDaoImpl();
-		RuserDoaImpl rdi=new RuserDoaImpl();
+		UserDaoImpl udi=new UserDaoImpl();
 		if(action!=null && action.equals("list")) {
-			List<Ruser>rtn=adi.requestedUserList();
+			List<User>rtn=adi.requestedUserList();
 			session.setAttribute("users",rtn);
 			response.sendRedirect("ListRuser.jsp");
 		}
 		else if(action!=null && action.equals("status")) {
 			String status=request.getParameter("status");
-			int fid=Integer.parseInt(request.getParameter("pid"));
+			int pid=Integer.parseInt(request.getParameter("pid"));
 			if(status!=null && status.equals("approved")) {
 				System.out.println("Approved Form");
-				adi.createUser(rdi.getRuser(fid));
+				adi.approveUser(pid);
 			}
 			else {
 				System.out.println("Reject Form");

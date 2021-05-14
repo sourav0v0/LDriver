@@ -3,7 +3,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
-<%@ page import="pojo.Ruser"%>
+<%@ page import="pojo.User"%>
 <%@ page import="utils.FileHandel"%>
 <!DOCTYPE html>
 <html>
@@ -15,7 +15,7 @@
 <body>
 <jsp:include page="header.jsp"/>
 
-<%List<Ruser> user=(List<Ruser>)session.getAttribute("users");
+<%List<User> user=(List<User>)session.getAttribute("users");
 if(user==null)
 	out.println("No New Request");
 else{
@@ -33,7 +33,7 @@ else{%>
 	    </tr>
 	  </thead>
 	  <tbody>
-<% for(Ruser f:user){%>
+<% for(User f:user){%>
     <tr>
       <td class="fw-lighter"><%=f.getPid()%></td>
       <td class="fw-lighter"><%=f.getEmail()%></td>

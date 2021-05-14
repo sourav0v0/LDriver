@@ -15,8 +15,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import pojo.Ruser;
 import pojo.User;
 import utils.DbCon;
 public class AdminDaoImpl implements AdminDao{
@@ -38,14 +36,14 @@ public class AdminDaoImpl implements AdminDao{
 		return false;
 	}
 	@Override
-	public List<Ruser> requestedUserList() {
-		List<Ruser> rtn=new ArrayList<Ruser>();
-		String que="select * from ruser";
+	public List<User> requestedUserList() {
+		List<User> rtn=new ArrayList<User>();
+		String que="select * from user where type='request'";
 		try {
 			PreparedStatement ps=con.prepareStatement(que);
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
-				rtn.add(new Ruser(rs.getInt("pid"),rs.getString("email"), rs.getString("name"), rs.getString("password")));
+				rtn.add(new User(rs.getInt("pid"),rs.getString("email"), rs.getString("name"), rs.getString("password"),rs.getString("type")));
 			}
 			return rtn;
 		}
@@ -55,21 +53,16 @@ public class AdminDaoImpl implements AdminDao{
 		return null;
 	}
 	@Override
-	public boolean createUser(Ruser user) {
+	public boolean approveUser(int pid) {
+		UserDaoImpl udi=new UserDaoImpl();
+		User user = udi.getUsers(pid);
 		if(con==null || user==null)return false;
 		try {
-			PreparedStatement ps=con.prepareStatement("delete from ruser where email =?");
+			PreparedStatement ps=con.prepareStatement("update user set type='user' where email=?");
 			ps.setString(1, user.getEmail());
 			if(ps.executeUpdate()>0) {
-				UserDaoImpl usr=new UserDaoImpl();
-				boolean b=usr.addUser(new User(user.getEmail(), user.getName(), user.getPassword() ,user.getPid()));
-				if(b) {
-					System.out.println("Mailed "+ mailUser(user));
-					return true;
-				}
-				else {
-					return false;
-				}
+				System.out.println("Mailed "+ mailUser(user));
+				return true;
 			}
 			return false;
 		} catch (SQLException e) {
@@ -78,7 +71,7 @@ public class AdminDaoImpl implements AdminDao{
 		return false;
 	}
 	
-	public boolean mailUser(Ruser r) {
+	public boolean mailUser(User r) {
 		String email="javajava0v0@gmail.com";
 		String pass="java@111";
 		Properties props = new Properties();    
@@ -113,7 +106,7 @@ public class AdminDaoImpl implements AdminDao{
 	public boolean deleteRuser(String email) {
 		if(con==null)return false;
 		try {
-			PreparedStatement ps=con.prepareStatement("delete from ruser where email =?");
+			PreparedStatement ps=con.prepareStatement("delete from user where email =?");
 			ps.setString(1, email);
 			return ps.executeUpdate()>0;
 		} catch (SQLException e) {

@@ -14,7 +14,8 @@ import com.sun.mail.iap.Response;
 import dao.AdminDaoImpl;
 import dao.PublicDaoImpl;
 import dao.UserDaoImpl;
-import pojo.Ruser;
+
+import pojo.User;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
@@ -31,7 +32,6 @@ public class LoginController extends HttpServlet {
 			AdminDaoImpl adi=new AdminDaoImpl();
 			if(adi.validAdmin(email, pas))
 			{
-				
 				session.setAttribute("type", "admin");
 				resp.sendRedirect("index.jsp");
 			}
@@ -61,10 +61,11 @@ public class LoginController extends HttpServlet {
 		String name=req.getParameter("name");
 		int id = Integer.parseInt(req.getParameter("cid"));
 		//String phone=req.getParameter("phone");
-		Ruser ruser=new Ruser(id, email, name,"");
+		User ruser=new User(id, email, name,"","request");
 		PublicDaoImpl pdi=new PublicDaoImpl();
+		UserDaoImpl udi=new UserDaoImpl();
 		System.out.println(ruser);
-		System.out.println(pdi.requestAdmin(ruser)+ " reuesetd Adin");
+		System.out.println(udi.requestAdmin(ruser)+ " reuesetd Adin");
 		resp.setContentType("text/html");
 		pdi.alertSuccess("Successfully Requested Admin", resp.getWriter());
 		
