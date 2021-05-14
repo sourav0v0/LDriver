@@ -25,7 +25,7 @@
   </div>
   <h1 class="display-1">SIGNUP</h1>
   <div class="container p-2">
-    <form action="login">
+    <form action="login"class="border-dark bg-light">
       <div class="mb-3 row" >
         <label for="cid" class="col-sm-2 col-form-label">Company Id</label>
         <div class="col-sm-6">

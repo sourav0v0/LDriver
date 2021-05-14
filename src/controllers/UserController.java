@@ -52,15 +52,13 @@ public class UserController extends HttpServlet {
 			String npass=request.getParameter("cpass");
 			String email=request.getParameter("emails");
 			System.out.println(email+" <> "+pass+" <> "+npass);
-			if(udi.updatePassword(email, pass, npass)) {
-				pdi.alertSuccess("Successfully Changed Your Password ", out);
-				System.out.println("done");
-			}
+			response.setContentType("text/html");
+			boolean b=udi.updatePassword(email, pass, npass);
+			System.out.println(email +"|"+pass+"|"+npass+"|"+b);
+			if(b)
+				pdi.alertSuccess("Your Password has been change", out);
 			else
-			{
-				System.out.println("Fail to change");
-			}
-			response.sendRedirect("index.jsp");
+				pdi.alertFail("Fail To Change Your Password", out);	
 		}
 	}
 

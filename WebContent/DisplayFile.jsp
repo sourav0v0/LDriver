@@ -11,6 +11,7 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 </head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 <body>
 <jsp:include page="header.jsp"/>
 
@@ -20,39 +21,27 @@ if(file==null)
 else{
 if(file.size()==0){ %>
 	<h1 class="display-1"> Your Havent Uploaded Any File</h1>
-	<h3 class="display-3"> <a href="UploadFile.jsp">Click Here to Upload</a></h1>
+	<h3 class="display-3"> <a href="UploadFile.jsp">Click Here to Upload</a></h3>
 <% }
 else{%>
-	<table class="table table-striped table-hover">
-	<thead>
-	    <tr>
-	      <th scope="col">File Name</th>
-	      <th scope="col">Download</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-<% for(FFile f:file){%>
-    <tr>
-      <td><%=f.getName().toUpperCase()%></td>
-      <td><a href="FileController?action=download&fid=<%=f.getId()%>" class="btn btn-primary">Download</a></td>
-      <td><a href="FileController?action=view&fid=<%=f.getId()%>" target="_blank"  class="btn btn-primary">View</a></td>
-      <td>
-    <div class="dropdown"> 
-  	<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-    Share
-  	</button>
-  	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-    	<li><a class="dropdown-item" href="FileController?action=generate&fid=<%=f.getId()%>&type=link">Link</a></li>
-    	<li><a class="dropdown-item" href="FileController?action=generate&fid=<%=f.getId()%>&type=image">Image</a></li>
-  	</ul>
-	</div>
-      <%-- <a href="FileController?action=generate&fid=<%=f.getId()%>" class="btn btn-primary">Share</a> --%>
-      </td>
-      
-      
-    </tr>   
-<% }}} %>
-  </tbody>
-</table>
+<div class="container">
+  <div class="row row-cols-auto">
+<% for(FFile f:file){
+String link="https://api.qrserver.com/v1/create-qr-code/?data='http://192.168.0.109:8080/Final/FileController?action=url,"+f.getId()+"&name=sourav&amp;size=100x100'";%>
+<div class="col">
+  <div class="card" style="width: 18rem;">
+  <img src=<%=link %> class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title"><%=f.getName() %></h5>
+    <a href="FileController?action=download&fid=<%=f.getId()%>" class="btn btn-primary">Download <i class="fa fa-download" aria-hidden="true"></i></a>
+    <a href="FileController?action=view&fid=<%=f.getId()%>" class="btn btn-primary">View <i class="fa fa-eye" aria-hidden="true"></i></a>
+    <a href="FileController?action=share&fid=<%=f.getId()%>" class="btn btn-primary">Share <i class="fas fa-share"></i></a>
+  </div>     
+  </div>
+ </div>
+<% }%>
+</div></div>
+<%}
+} %>
 </body>
 </html>

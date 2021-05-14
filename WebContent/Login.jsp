@@ -11,7 +11,7 @@
 </head>
 <body>
 <jsp:include page="header.jsp"/>
-  <div class="container  border border-dark bg-light position-absolute top-50 start-50 translate-middle" style="padding:50px">
+  <div class="container login border border-dark bg-light position-absolute top-50 start-50 translate-middle" style="padding:50px">
     <form action="login" method="post">
      <div class="mb-3 row">
      	<div class="col-sm-6">

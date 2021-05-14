@@ -10,6 +10,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 </head>
 <body>
 <jsp:include page="header.jsp"/>
@@ -34,11 +35,11 @@ else{%>
 	  <tbody>
 <% for(Ruser f:user){%>
     <tr>
-      <td><%=f.getPid()%></td>
-      <td><a href="#" class="fw-lighter"><%=f.getEmail()%></a></td>
-      <td><a href="#" class="fw-lighter"><%=f.getName().toUpperCase()%></a></td>
-      <td><a href="AdminController?action=status&status=approved&pid=<%=f.getPid()%>" class="fw-lighter">Approve</a>
-      <a href="AdminController?action=status&status=reject&pid=<%=f.getPid()%>" class="fw-lighter">Reject</a></td>
+      <td class="fw-lighter"><%=f.getPid()%></td>
+      <td class="fw-lighter"><%=f.getEmail()%></td>
+      <td class="fw-lighter"><%=f.getName().toUpperCase()%></td>
+      <td><a href="AdminController?action=status&status=approved&pid=<%=f.getPid()%>" class="fw-lighter">Approve <i class="fa fa-check" aria-hidden="true"></i></a>
+      <a href="AdminController?action=status&status=reject&pid=<%=f.getPid()%>" class="fw-lighter">Reject <i class="fa fa-ban" aria-hidden="true"></i></a></td>
     </tr>   
 <% }}} %>
   </tbody>

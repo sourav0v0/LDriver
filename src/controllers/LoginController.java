@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.sun.mail.iap.Response;
+
 import dao.AdminDaoImpl;
 import dao.PublicDaoImpl;
 import dao.UserDaoImpl;
@@ -63,6 +65,8 @@ public class LoginController extends HttpServlet {
 		PublicDaoImpl pdi=new PublicDaoImpl();
 		System.out.println(ruser);
 		System.out.println(pdi.requestAdmin(ruser)+ " reuesetd Adin");
-		resp.sendRedirect("index.jsp");
+		resp.setContentType("text/html");
+		pdi.alertSuccess("Successfully Requested Admin", resp.getWriter());
+		
 	}
 }

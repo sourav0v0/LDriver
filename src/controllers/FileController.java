@@ -16,6 +16,7 @@ import org.omg.CORBA.Request;
 
 import dao.FileDao;
 import dao.FileDaoImpl;
+import dao.PublicDaoImpl;
 import pojo.FFile;
 import utils.FileHandel;
 
@@ -46,29 +47,33 @@ public class FileController extends HttpServlet {
 		FileDaoImpl fdi=new FileDaoImpl();
 		if(action!=null && action.equals("generate"))
 		{
+			PrintWriter out=response.getWriter();
 			String pid=request.getParameter("fid");
 			String type=request.getParameter("type");
 			if(type!=null && type.equals("image"))
-				System.out.println("Impage");
-			//out.println("<img src=\"https://api.qrserver.com/v1/create-qr-code/?data='http://192.168.0.109:8080/Final/FileController?action=download&fid="+pid+"'&amp;size=100x100\" alt=\"\" title=\"\" />");
+				out.println("<img src=\"https://api.qrserver.com/v1/create-qr-code/?data='http://192.168.0.109:8080/Final/FileController?action=download&fid="+pid+"'&amp;size=100x100\" alt=\"\" title=\"\" />");
 			else
-				System.out.println("IP link");
-				//out.print("http://192.168.0.109:8080/Final/FileController?action=download&fid="+pid);
+				out.print("http://192.168.0.109:8080/Final/FileController?action=download&fid="+pid);
 		}
 		else if(action!=null && action.equals("download")) {
 			System.out.println("Download");
-			String name=fdi.getName(Integer.parseInt(request.getParameter("fid")));
+			String fid=request.getParameter("fid");
+			String name=fdi.getName(Integer.parseInt(fid));
+			String close=request.getParameter("close");
 			try {
 				System.out.println("File name to downalod is "+name);
 				boolean b=fh.downloadFile(request.getServletContext(), response, name);
-				if(b)
+				if(b) {
 					System.out.println("Donwloagede");
+				}
 				else
 					System.out.println("Fail to download the file");
 			} catch (Exception e) {
 				System.out.println("Somting Went worng");
 				e.printStackTrace();
 			}
+			
+			
 		}
 		else if(action!=null && action.equals("view")) {
 			String name=fdi.getName(Integer.parseInt(request.getParameter("fid")));
@@ -76,9 +81,20 @@ public class FileController extends HttpServlet {
 				System.out.println("WEEE");
 				fh.playContent(request.getServletContext(), response, name);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		else if(action!=null && action.equals("share")) {
+			String fid=fdi.getName(Integer.parseInt(request.getParameter("fid")));
+			String url="http://192.168.0.109:8080/Final/FileController?action=download&fid="+fid;
+			PublicDaoImpl pdi=new PublicDaoImpl();
+			response.setContentType("text/html");
+			pdi.alertSuccess("Sharable Link : "+url, response.getWriter());
+		}
+		else if(action!=null && action.split(",").length>1) {
+			String[] sp=action.split(",");
+			String id=sp[1];
+			response.sendRedirect("FileController?action=download&fid="+id+"&close=true");
 		}
 		else {
 			List<FFile> fls=fdi.getFiles(email);
@@ -93,12 +109,14 @@ public class FileController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		FileHandel fh=new FileHandel();
 		boolean b=fh.uploadFile(request);
+		PublicDaoImpl pdi=new PublicDaoImpl();
+		response.setContentType("text/html");
 		if(b) {
-			System.out.println("Uploaded");
+			pdi.alertSuccess("Your File Have Been Uploaded ", response.getWriter());
 		}
 		else
 		{
-			System.out.println("Fail to upload");
+			pdi.alertFail("Something Went wrong..", response.getWriter());
 		}
 		response.sendRedirect("index.jsp");
 	}

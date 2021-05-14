@@ -11,4 +11,5 @@ public interface AdminDao {
 	List<Ruser> requestedUserList();
 	boolean createUser(Ruser r);
 	boolean deleteRuser(String email);
+	int countAdmin();
 }

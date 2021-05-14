@@ -148,4 +148,20 @@ public class AdminDaoImpl implements AdminDao{
 		}
 		return false;
 	}
+	@Override
+	public int countAdmin() {
+		try {
+			String que="select count(email) from admin";
+			PreparedStatement ps=con.prepareStatement(que);
+			ResultSet rs=ps.executeQuery();
+			if(rs.next())
+				return rs.getInt(1);
+			else
+				return 0;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }
