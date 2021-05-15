@@ -71,37 +71,7 @@ public class AdminDaoImpl implements AdminDao{
 		return false;
 	}
 	
-	public boolean mailUser(User r) {
-		String email="javajava0v0@gmail.com";
-		String pass="java@111";
-		Properties props = new Properties();    
-		props.put("mail.smtp.host", "smtp.gmail.com");    
-		props.put("mail.smtp.socketFactory.port", "465");    
-		props.put("mail.smtp.socketFactory.class",    
-				"javax.net.ssl.SSLSocketFactory");    
-		props.put("mail.smtp.auth", "true");    
-		props.put("mail.smtp.port", "465"); 
-		Session session = Session.getInstance(props,    
-				new javax.mail.Authenticator() {    
-			protected PasswordAuthentication getPasswordAuthentication() {    
-				return new PasswordAuthentication(email,pass);  
-			}    
-		});    
-		try {    
-			MimeMessage message = new MimeMessage(session);
-			message.addRecipient(Message.RecipientType.TO,new InternetAddress(r.getEmail()));    
-			message.setSubject("LDrive Account Info");    
-			message.setText(">Your Account has Been Created  \n>Your UserName is your email : "+r.getEmail()+
-					"\n>Your password is : "+r.getPassword()+
-					"\n>Please change Your password");
-			Transport.send(message);    
-			return true;
-		} catch (MessagingException e) {
-			e.printStackTrace();
-			return false;
-		}    
-
-	}
+	
 	@Override
 	public boolean deleteRuser(String email) {
 		if(con==null)return false;
@@ -156,5 +126,67 @@ public class AdminDaoImpl implements AdminDao{
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	@Override
+	public boolean rejectUser(User user) {
+		UserDaoImpl udi=new UserDaoImpl();
+		if(!udi.removeUser(user))return false;
+		String email="javajava0v0@gmail.com";
+		String pass="java@111";
+		Properties props = new Properties();    
+		props.put("mail.smtp.host", "smtp.gmail.com");    
+		props.put("mail.smtp.socketFactory.port", "465");    
+		props.put("mail.smtp.socketFactory.class",    
+				"javax.net.ssl.SSLSocketFactory");    
+		props.put("mail.smtp.auth", "true");    
+		props.put("mail.smtp.port", "465"); 
+		Session session = Session.getInstance(props,    
+				new javax.mail.Authenticator() {    
+			protected PasswordAuthentication getPasswordAuthentication() {    
+				return new PasswordAuthentication(email,pass);  
+			}    
+		});    
+		try {    
+			MimeMessage message = new MimeMessage(session);
+			message.addRecipient(Message.RecipientType.TO,new InternetAddress(user.getEmail()));    
+			message.setSubject("LDrive Account Info");    
+			message.setText(">Your Account has Been Rejected ");
+			Transport.send(message);    
+			return true;
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			return false;
+		}   
+	}
+	public boolean mailUser(User r) {
+		String email="javajava0v0@gmail.com";
+		String pass="java@111";
+		Properties props = new Properties();    
+		props.put("mail.smtp.host", "smtp.gmail.com");    
+		props.put("mail.smtp.socketFactory.port", "465");    
+		props.put("mail.smtp.socketFactory.class",    
+				"javax.net.ssl.SSLSocketFactory");    
+		props.put("mail.smtp.auth", "true");    
+		props.put("mail.smtp.port", "465"); 
+		Session session = Session.getInstance(props,    
+				new javax.mail.Authenticator() {    
+			protected PasswordAuthentication getPasswordAuthentication() {    
+				return new PasswordAuthentication(email,pass);  
+			}    
+		});    
+		try {    
+			MimeMessage message = new MimeMessage(session);
+			message.addRecipient(Message.RecipientType.TO,new InternetAddress(r.getEmail()));    
+			message.setSubject("LDrive Account Info");    
+			message.setText(">Your Account has Been Created  \n>Your UserName is your email : "+r.getEmail()+
+					"\n>Your password is : "+r.getPassword()+
+					"\n>Please change Your password");
+			Transport.send(message);    
+			return true;
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			return false;
+		}    
+
 	}
 }

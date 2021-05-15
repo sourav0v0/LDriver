@@ -47,8 +47,10 @@ public class LoginController extends HttpServlet {
 			resp.sendRedirect("index.jsp");
 			}
 			else {
-				resp.sendRedirect("index.jsp");
+				resp.setContentType("text/html");
+				new PublicDaoImpl().alertFail("Fail To Login", resp.getWriter());
 			}
+			
 		}
 		else {
 			resp.sendRedirect("index.jsp");
@@ -60,14 +62,19 @@ public class LoginController extends HttpServlet {
 		String email=req.getParameter("email");
 		String name=req.getParameter("name");
 		int id = Integer.parseInt(req.getParameter("cid"));
-		//String phone=req.getParameter("phone");
 		User ruser=new User(id, email, name,"","request");
 		PublicDaoImpl pdi=new PublicDaoImpl();
 		UserDaoImpl udi=new UserDaoImpl();
 		System.out.println(ruser);
-		System.out.println(udi.requestAdmin(ruser)+ " reuesetd Adin");
-		resp.setContentType("text/html");
-		pdi.alertSuccess("Successfully Requested Admin", resp.getWriter());
+		if(udi.requestAdmin(ruser)) {
+			resp.setContentType("text/html");
+			pdi.alertSuccess("Successfully Requested Admin", resp.getWriter());
+		}
+		else
+		{
+			resp.setContentType("text/html");
+			pdi.alertFail("Something Went Wrong...", resp.getWriter());
+		}
 		
 	}
 }

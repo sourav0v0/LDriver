@@ -85,11 +85,20 @@ public class FileController extends HttpServlet {
 			}
 		}
 		else if(action!=null && action.equals("share")) {
-			String fid=fdi.getName(Integer.parseInt(request.getParameter("fid")));
-			String url="http://192.168.0.109:8080/Final/FileController?action=download&fid="+fid;
-			PublicDaoImpl pdi=new PublicDaoImpl();
-			response.setContentType("text/html");
-			pdi.alertSuccess("Sharable Link : "+url, response.getWriter());
+			String fid=request.getParameter("fid");
+//			String url="http://192.168.0.109:8080/Final/FileController?action=download&fid="+fid;
+//			PublicDaoImpl pdi=new PublicDaoImpl();
+//			response.setContentType("text/html");
+//			pdi.alertSuccess("Sharable Link : "+url, response.getWriter());
+			request.setAttribute("fid",fid);
+			RequestDispatcher rs=request.getRequestDispatcher("Share.jsp");
+			rs.forward(request, response);
+			
+		}
+		else if(action!=null && action.equals("shareType")) {
+			int fid =Integer.parseInt(request.getParameter("fid"));
+			String privateName= request.getParameter("privateName");
+			String type = request.getParameter("type");
 		}
 		else if(action!=null && action.split(",").length>1) {
 			String[] sp=action.split(",");
@@ -111,14 +120,10 @@ public class FileController extends HttpServlet {
 		boolean b=fh.uploadFile(request);
 		PublicDaoImpl pdi=new PublicDaoImpl();
 		response.setContentType("text/html");
-		if(b) {
+		if(b) 
 			pdi.alertSuccess("Your File Have Been Uploaded ", response.getWriter());
-		}
 		else
-		{
 			pdi.alertFail("Something Went wrong..", response.getWriter());
-		}
-		response.sendRedirect("index.jsp");
 	}
 
 }

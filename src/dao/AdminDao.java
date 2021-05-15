@@ -10,5 +10,6 @@ public interface AdminDao {
 	List<User> requestedUserList();
 	boolean approveUser(int pid);
 	boolean deleteRuser(String email);
+	boolean rejectUser(User user);
 	int countAdmin();
 }

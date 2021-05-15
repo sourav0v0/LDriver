@@ -50,8 +50,7 @@ public class AdminController extends HttpServlet {
 				adi.approveUser(pid);
 			}
 			else {
-				System.out.println("Reject Form");
-				
+				adi.rejectUser(udi.getUsers(Integer.parseInt(request.getParameter("pid"))));
 			}
 			response.sendRedirect("index.jsp");
 		}

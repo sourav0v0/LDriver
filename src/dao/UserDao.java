@@ -10,6 +10,7 @@ public interface UserDao {
 	User getUsers(int uid);
 	List<User> getUsers();
 	User searchUser(String email);
+	boolean removeUser(User user);
 	boolean validUser(String email,String pass);
 	boolean requestAdmin(User usr);
 }

@@ -58,6 +58,7 @@ public class UserDaoImpl implements UserDao{
 			user.setName(rs.getString("name"));
 			user.setEmail(rs.getString("email"));
 			user.setPid(rs.getInt("pid"));
+			user.setPassword(rs.getString("password"));
 			user.setType(rs.getString("type"));
 			rtn.add(user);
 			}
@@ -79,7 +80,7 @@ public class UserDaoImpl implements UserDao{
 			User user=new User();
 			user.setName(rs.getString("name"));
 			user.setEmail(rs.getString("email"));
-			user.setPassword("");
+			user.setPassword(rs.getString("password"));
 			user.setPid(rs.getInt("pid"));
 			user.setType(rs.getString("type"));
 			return user;
@@ -124,6 +125,7 @@ public class UserDaoImpl implements UserDao{
 			user.setEmail(rs.getString("email"));
 			user.setPid(rs.getInt("pid"));
 			user.setType(rs.getString("type"));
+			user.setPassword(rs.getString("password"));
 			rtn.add(user);
 			}
 			return rtn;
@@ -169,6 +171,7 @@ public class UserDaoImpl implements UserDao{
 			user.setEmail(rs.getString("email"));
 			user.setPid(rs.getInt("pid"));
 			user.setType(rs.getString("type"));
+			user.setPassword(rs.getString("password"));
 			return user;
 			}
 		}
@@ -176,5 +179,17 @@ public class UserDaoImpl implements UserDao{
 			ex.printStackTrace();
 		}
 		return null;
+	}
+	@Override
+	public boolean removeUser(User user) {
+		if(con==null)return false;
+		try {
+			PreparedStatement ps=con.prepareStatement("delete from user where pid=?");
+			ps.setInt(1,user.getPid());
+			return ps.executeUpdate()>0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
