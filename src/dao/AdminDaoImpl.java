@@ -61,7 +61,7 @@ public class AdminDaoImpl implements AdminDao{
 			PreparedStatement ps=con.prepareStatement("update user set type='user' where email=?");
 			ps.setString(1, user.getEmail());
 			if(ps.executeUpdate()>0) {
-				System.out.println("Mailed "+ mailUser(user));
+				new Approve(user);	 // Thread 
 				return true;
 			}
 			return false;
@@ -129,34 +129,20 @@ public class AdminDaoImpl implements AdminDao{
 	}
 	@Override
 	public boolean rejectUser(User user) {
-		UserDaoImpl udi=new UserDaoImpl();
-		if(!udi.removeUser(user))return false;
-		String email="javajava0v0@gmail.com";
-		String pass="java@111";
-		Properties props = new Properties();    
-		props.put("mail.smtp.host", "smtp.gmail.com");    
-		props.put("mail.smtp.socketFactory.port", "465");    
-		props.put("mail.smtp.socketFactory.class",    
-				"javax.net.ssl.SSLSocketFactory");    
-		props.put("mail.smtp.auth", "true");    
-		props.put("mail.smtp.port", "465"); 
-		Session session = Session.getInstance(props,    
-				new javax.mail.Authenticator() {    
-			protected PasswordAuthentication getPasswordAuthentication() {    
-				return new PasswordAuthentication(email,pass);  
-			}    
-		});    
-		try {    
-			MimeMessage message = new MimeMessage(session);
-			message.addRecipient(Message.RecipientType.TO,new InternetAddress(user.getEmail()));    
-			message.setSubject("LDrive Account Info");    
-			message.setText(">Your Account has Been Rejected ");
-			Transport.send(message);    
-			return true;
-		} catch (MessagingException e) {
-			e.printStackTrace();
-			return false;
-		}   
+		new Reject(user);
+		return true;
+	}
+	
+}
+class Approve implements Runnable {
+	User r;
+	Approve(User r){
+		this.r=r;
+		this.run();
+	}
+	@Override
+	public void run() {
+		mailUser(r);
 	}
 	public boolean mailUser(User r) {
 		String email="javajava0v0@gmail.com";
@@ -187,6 +173,46 @@ public class AdminDaoImpl implements AdminDao{
 			e.printStackTrace();
 			return false;
 		}    
-
+	}
+}
+class Reject implements Runnable{
+	User u;
+	 Reject(User u){
+		 this.u=u;
+		 this.run();
+	 }
+	@Override
+	public void run() {
+		rejectUser(u);
+	}
+	public boolean rejectUser(User user) {
+		UserDaoImpl udi=new UserDaoImpl();
+		if(!udi.removeUser(user))return false;
+		String email="javajava0v0@gmail.com";
+		String pass="java@111";
+		Properties props = new Properties();    
+		props.put("mail.smtp.host", "smtp.gmail.com");    
+		props.put("mail.smtp.socketFactory.port", "465");    
+		props.put("mail.smtp.socketFactory.class",    
+				"javax.net.ssl.SSLSocketFactory");    
+		props.put("mail.smtp.auth", "true");    
+		props.put("mail.smtp.port", "465"); 
+		Session session = Session.getInstance(props,    
+				new javax.mail.Authenticator() {    
+			protected PasswordAuthentication getPasswordAuthentication() {    
+				return new PasswordAuthentication(email,pass);  
+			}    
+		});    
+		try {    
+			MimeMessage message = new MimeMessage(session);
+			message.addRecipient(Message.RecipientType.TO,new InternetAddress(user.getEmail()));    
+			message.setSubject("LDrive Account Info");    
+			message.setText(">Your Account has Been Rejected ");
+			Transport.send(message);    
+			return true;
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			return false;
+		}   
 	}
 }

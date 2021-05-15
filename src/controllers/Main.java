@@ -32,7 +32,6 @@ public class Main extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		String action =(String) request.getParameter("action");
 		HttpSession session=request.getSession();
 		System.out.println(action);
