@@ -15,7 +15,10 @@
 <body>
 <jsp:include page="header.jsp"/>
 
-<%List<FFile> file=(List<FFile>)session.getAttribute("files");
+<%
+String email1=(String)session.getAttribute("email");
+if(email1==null)response.sendRedirect("Login.jsp");
+List<FFile> file=(List<FFile>)session.getAttribute("files");
 if(file==null)
 	out.println("Null Files");
 else{

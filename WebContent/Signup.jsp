@@ -24,7 +24,7 @@
    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
   <h1 class="display-1">SIGNUP</h1>
-  <div class="container p-2">
+  <div class="container" >
     <form action="login"class="border-dark bg-light">
       <div class="mb-3 row" >
         <label for="cid" class="col-sm-2 col-form-label">Company Id</label>
@@ -50,6 +50,7 @@
       </div>
     </form>
   </div>
+  <jsp:include page="footer.html"></jsp:include>
 </body>
 </html>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>

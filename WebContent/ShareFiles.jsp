@@ -22,7 +22,10 @@
 </head>
 <jsp:include page="header.jsp"/>
 <body>
-<%HashMap<Integer,ArrayList<Couple>> list=(HashMap<Integer,ArrayList<Couple>>)request.getAttribute("share");
+<%
+String email1=(String)session.getAttribute("email");
+if(email1==null)response.sendRedirect("Login.jsp");
+HashMap<Integer,ArrayList<Couple>> list=(HashMap<Integer,ArrayList<Couple>>)request.getAttribute("share");
 if(list.size()==0){ %>
 <h2 class="display-2">You have Not Shared Any File</h2>
 <%}else{ %>

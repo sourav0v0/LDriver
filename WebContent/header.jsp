@@ -74,7 +74,7 @@ if(type !=null && type.equals("employee")){ %>
         <a class="nav-link " aria-current="page" href="index.jsp">Home</a>
         <a class="nav-link" href="Login.jsp">Login</a>
         <a class="nav-link" href="Signup.jsp">Sign up</a>
-        <a class="nav-link" href="#">About</a>
+        <a class="nav-link" href="About.jsp">About</a>
       </div>
     </div>
   </div>

@@ -50,6 +50,7 @@ public class FileController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session=request.getSession();
 		String email=(String)session.getAttribute("email");
+		if(email==null)response.sendRedirect("Login.jsp");
 		String action=request.getParameter("action");
 		FileHandel fh=new FileHandel();
 		FileDaoImpl fdi=new FileDaoImpl();
@@ -159,13 +160,14 @@ public class FileController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session=request.getSession();
+		String email=(String)session.getAttribute("email");
+		if(email==null)response.sendRedirect("Login.jsp");
 		String action=request.getParameter("action");
 		PublicDaoImpl pdi=new PublicDaoImpl();
-		HttpSession session=request.getSession();
 		if(action!=null && action.equals("shareType")) {
 			int fid=Integer.parseInt(request.getParameter("fid"));
 			String type=request.getParameter("type");
-			String email= (String) session.getAttribute("email");
 			ShareDaoImpl sdi=new ShareDaoImpl();
 			String url="http://192.168.0.109:8080/Final/FileController?action=download&fid="+fid;
 			if(type.equals("public")) {

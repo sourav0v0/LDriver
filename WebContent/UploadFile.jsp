@@ -16,6 +16,9 @@
 </head>
 <body>
 	<jsp:include page="header.jsp" />
+	<%
+	String email1=(String)session.getAttribute("email");
+	if(email1==null)response.sendRedirect("Login.jsp"); %>
 	<div class="container">
 		<form action="FileController" enctype="multipart/form-data" method="post">
 			<input type="file" name="file" value="" class="form-controll"

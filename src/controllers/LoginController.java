@@ -60,6 +60,9 @@ public class LoginController extends HttpServlet {
 	}
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session=req.getSession();
+		String email1=(String)session.getAttribute("email");
+		if(email1==null)resp.sendRedirect("Login.jsp");
 		String email=req.getParameter("email");
 		String name=req.getParameter("name");
 		int id = Integer.parseInt(req.getParameter("cid"));

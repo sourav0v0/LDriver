@@ -43,6 +43,8 @@ public class UserController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action=request.getParameter("action");
 		HttpSession session=request.getSession();
+		String email1=(String)session.getAttribute("email");
+		if(email1==null)response.sendRedirect("Login.jsp");
 		UserDaoImpl udi=new UserDaoImpl();
 		PublicDaoImpl pdi=new PublicDaoImpl();
 		PrintWriter out=response.getWriter();
