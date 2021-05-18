@@ -9,6 +9,8 @@ public interface FileDao {
 	boolean postName(String email,String name);
 	List<FFile> getFiles(String email);
 	String getName(int id);
-	List<User> sharedWith(int fid);
-	boolean addShare(int fid,int uid);
+	FFile getFileWithId(int fid);
+	int getId(String name) ;
+//	List<User> sharedWith(int fid);
+//	boolean addShare(int fid,int uid);
 }

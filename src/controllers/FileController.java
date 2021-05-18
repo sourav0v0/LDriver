@@ -2,7 +2,12 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,7 +22,10 @@ import org.omg.CORBA.Request;
 import dao.FileDao;
 import dao.FileDaoImpl;
 import dao.PublicDaoImpl;
+import dao.ShareDaoImpl;
+import pojo.Couple;
 import pojo.FFile;
+import pojo.Share;
 import utils.FileHandel;
 
 /**
@@ -55,21 +63,48 @@ public class FileController extends HttpServlet {
 			else
 				out.print("http://192.168.0.109:8080/Final/FileController?action=download&fid="+pid);
 		}
+		else if(action!=null && action.equals("SharedFile"))
+		{
+			System.out.println("IN FILE SHER");
+			ShareDaoImpl sdi=new ShareDaoImpl();
+			ArrayList<Share> sh= (ArrayList<Share>) sdi.getShareFiles("souravprajapati31@gmail.com");
+			Map<Integer,ArrayList<Couple>> rtn=new HashMap<>();
+			for(Share sha:sh) {
+				int id=sha.getFid();
+				ArrayList<Couple> t=rtn.getOrDefault(id, new ArrayList<Couple>());
+				t.add(new Couple(sha.getToUser(),sha.getSid()));
+				rtn.put(id, t);
+			}
+			request.setAttribute("share", rtn);
+			RequestDispatcher rd=request.getRequestDispatcher("ShareFiles.jsp");
+			rd.forward(request, response);
+		}
 		else if(action!=null && action.equals("download")) {
 			System.out.println("Download");
-			String fid=request.getParameter("fid");
-			String name=fdi.getName(Integer.parseInt(fid));
-			String close=request.getParameter("close");
+		    int fid=Integer.parseInt(request.getParameter("fid"));
+			String name=fdi.getName(fid);
+//			String close=request.getParameter("close");
+			PublicDaoImpl pdi=new PublicDaoImpl();
+			ShareDaoImpl sdi=new ShareDaoImpl();
+			if(email==null)
+			{
+				pdi.alertFail("Please Login to download the file", response.getWriter());
+			}
 			try {
-				System.out.println("File name to downalod is "+name);
+				if(sdi.validEmail(fid, email))
+				{
 				boolean b=fh.downloadFile(request.getServletContext(), response, name);
 				if(b) {
 					System.out.println("Donwloagede");
 				}
 				else
-					System.out.println("Fail to download the file");
+					pdi.alertFail("Something went Wrong", response.getWriter());
+				}
+				else {
+					pdi.alertFail("You Dont Have Access...", response.getWriter());
+				}
 			} catch (Exception e) {
-				System.out.println("Somting Went worng");
+				pdi.alertFail("Something went Wrong", response.getWriter());
 				e.printStackTrace();
 			}
 			
@@ -95,10 +130,18 @@ public class FileController extends HttpServlet {
 			rs.forward(request, response);
 			
 		}
-		else if(action!=null && action.equals("shareType")) {
-			int fid =Integer.parseInt(request.getParameter("fid"));
-			String privateName= request.getParameter("privateName");
-			String type = request.getParameter("type");
+		else if(action!=null && action.equals("removeUser")) {
+			PublicDaoImpl pdi=new PublicDaoImpl();
+			int sid =Integer.parseInt(request.getParameter("sid")==null ?"-1":request.getParameter("sid"));
+			ShareDaoImpl sdi=new ShareDaoImpl();
+			if(sdi.deleteAccessUsingSid(sid)) {
+				pdi.alertSuccess("Deleted Access ",response.getWriter(),"FileController?action=SharedFile");
+			}
+			else
+			{
+				pdi.alertFail("Something Went Wrong",response.getWriter(),"FileController?action=SharedFile");
+			}
+			
 		}
 		else if(action!=null && action.split(",").length>1) {
 			String[] sp=action.split(",");
@@ -116,14 +159,45 @@ public class FileController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String action=request.getParameter("action");
+		PublicDaoImpl pdi=new PublicDaoImpl();
+		HttpSession session=request.getSession();
+		if(action!=null && action.equals("shareType")) {
+			int fid=Integer.parseInt(request.getParameter("fid"));
+			String type=request.getParameter("type");
+			String email= (String) session.getAttribute("email");
+			ShareDaoImpl sdi=new ShareDaoImpl();
+			String url="http://192.168.0.109:8080/Final/FileController?action=download&fid="+fid;
+			if(type.equals("public")) {
+				boolean b=sdi.publicShare(fid,email);
+				response.setContentType("text/html");
+				if(b) 
+					pdi.alertSuccess("Publicly Shared File url is "+url, response.getWriter());
+				else
+					pdi.alertFail("Something Went wrong..", response.getWriter());
+			}
+			else
+			{
+				String userJoinList=request.getParameter("usersShare");
+				String[] users=userJoinList.split("-");
+				boolean b=sdi.privateShare(fid,email,users);
+				response.setContentType("text/html");
+				if(b) 
+					pdi.alertSuccess("Privately Shared File url is "+url, response.getWriter());
+				else
+					pdi.alertFail("Something Went wrong..", response.getWriter());
+			}
+			
+		}
+		else {
 		FileHandel fh=new FileHandel();
 		boolean b=fh.uploadFile(request);
-		PublicDaoImpl pdi=new PublicDaoImpl();
 		response.setContentType("text/html");
 		if(b) 
 			pdi.alertSuccess("Your File Have Been Uploaded ", response.getWriter());
 		else
 			pdi.alertFail("Something Went wrong..", response.getWriter());
+		}
 	}
 
 }

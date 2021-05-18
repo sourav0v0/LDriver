@@ -33,6 +33,7 @@ public class LoginController extends HttpServlet {
 			if(adi.validAdmin(email, pas))
 			{
 				session.setAttribute("type", "admin");
+				session.setAttribute("email", email);
 				resp.sendRedirect("index.jsp");
 			}
 			else {

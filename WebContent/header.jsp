@@ -36,7 +36,7 @@ if(type !=null && type.equals("employee")){ %>
         <a class="nav-link " aria-current="page" href="index.jsp">Home</a>
         <a class="nav-link" href="FileController">List Of Files Uploaded</a>
         <a class="nav-link" href="UploadFile.jsp">Upload Files</a>
-        <a class="nav-link" href="#">Download Files</a>
+        <a class="nav-link" href="FileController?action=SharedFile">Shared Files</a>
         <a class="nav-link" href="changePassword.jsp">Change Password</a>
         <a class="nav-link" href="Main?action=logout">Logout</a>
       </div>

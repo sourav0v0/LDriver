@@ -15,9 +15,9 @@ List<User> user=udi.getUsers();
 </head>
 <body>
 <jsp:include page="header.jsp"/>
-<h1> Share page for <%-- <%= request.getParameter("fid") %> --%></h1>
+<h1> Share page for <%= request.getParameter("name") %> </h1>
 <div class="container">
-<form action="#" method="post">
+<form action="FileController" method="post"> 	<!-- FileController -->
 <input type="hidden" name="action" value="shareType">
 <input type="hidden" name="fid" value="<%=request.getParameter("fid")%>">
 <input type="hidden" name="usersShare" id="usersShare">
@@ -60,7 +60,7 @@ List<User> user=udi.getUsers();
 	  </div>
 	  <div id="AddUser"></div>
 </div>
-<input type="submit">
+<button class="btn  btn-outline-success">Share Folder </button>
 </form>
 </div>
 
