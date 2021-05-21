@@ -39,6 +39,7 @@ String link="https://api.qrserver.com/v1/create-qr-code/?data='http://192.168.0.
     <a href="FileController?action=download&fid=<%=f.getId()%>" class="btn btn-primary">Download <i class="fa fa-download" aria-hidden="true"></i></a>
     <a href="FileController?action=view&fid=<%=f.getId()%>" class="btn btn-primary">View <i class="fa fa-eye" aria-hidden="true"></i></a>
     <a href="FileController?action=share&fid=<%=f.getId()%>&name=<%=f.getName()%>" class="btn btn-primary">Share <i class="fas fa-share"></i></a>
+	<a href="FileController?action=delete&fid=<%=f.getId()%>&name=<%=f.getName()%>" class="btn btn-primary">Delete</a>
   </div>     
   </div>
  </div>

@@ -11,6 +11,7 @@ public interface UserDao {
 	List<User> getUsers();
 	User searchUser(String email);
 	boolean removeUser(User user);
+	boolean removeUserById(int fid);
 	boolean validUser(String email,String pass);
 	boolean requestAdmin(User usr);
 }

@@ -6,8 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.jdbc.Util;
-
+import pojo.FFile;
 import pojo.Share;
 import pojo.User;
 import utils.DbCon;
@@ -30,7 +29,14 @@ public class ShareDaoImpl implements ShareDao{
 			ps.setString(2, frm_user);
 			ps.setString(3, "private");
 			ps.setInt(4, fid);
-            ps.executeUpdate();
+			if(ps.executeUpdate()>0) {
+				UserDaoImpl udi=new UserDaoImpl();
+				User usr=udi.searchUser(s);
+				if(usr == null)
+					System.out.println("something went Wrong");
+				
+				return true;
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -39,9 +45,12 @@ public class ShareDaoImpl implements ShareDao{
 		}
 		return true;
 	}
-
+	
 	@Override
 	public boolean validEmail(int fid, String gmail) {
+		FileDaoImpl fdi=new FileDaoImpl();
+		if (fdi.getFileWithId(fid).getEmail().equals(gmail))
+			return true;
 		String que= "select  * from share where fid=?";
 		try {
 			PreparedStatement ps=con.prepareStatement(que);
@@ -131,7 +140,10 @@ public class ShareDaoImpl implements ShareDao{
 			ps.setString(1, frm_user);
 			ps.setString(2, "public");
 			ps.setInt(3, fid);
-			return ps.executeUpdate()>0;
+			if(ps.executeUpdate()>0)
+				{
+				return true;
+				}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -203,6 +215,59 @@ public class ShareDaoImpl implements ShareDao{
 			return false;
 		}
 	}
-	
 
+	@Override
+	public List<FFile> sharedWithUs(String email) {
+		String que= "select  * from share where share=? or type='public'";
+		List<FFile> st=new ArrayList<FFile>();
+		try {
+			PreparedStatement ps=con.prepareStatement(que);
+			ps.setString(1,email);
+			FileDaoImpl fdi=new FileDaoImpl();
+            ResultSet rs=ps.executeQuery();
+            while(rs.next())
+            {
+            	FFile temp=fdi.getFileWithId(rs.getInt("fid"));
+            	if(temp!=null)
+            		st.add(temp);
+            }
+            return st;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+
+	@Override
+	public String getShareUser(int id) {
+		String que= "select  * from share where fid=?";
+		try {
+			PreparedStatement ps=con.prepareStatement(que);
+			ps.setInt(1, id);
+            ResultSet rs=ps.executeQuery();
+            if(rs.next())
+            	return rs.getString("user");
+            return null;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public boolean deleteUserShare(String share) {
+		String que= "delete from share where user=?";
+		try {
+			PreparedStatement ps=con.prepareStatement(que);
+			ps.setString(1, share);
+            return ps.executeUpdate()>0;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

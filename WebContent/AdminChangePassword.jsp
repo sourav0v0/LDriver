@@ -28,7 +28,7 @@ function vali()
 <jsp:include page="header.jsp"/>
 <h1 class="display-1">Change Password</h1>
   <div class="container p-2">
-    <form action="User" method="post" onsubmit="return vali()">
+    <form action="login" method="post">
     <input type="hidden" name="action" value="changePassword"> 
     <input type="hidden" name="emails" value="<%=session.getAttribute("email")%>"> 
       <div class="mb-3 row" >

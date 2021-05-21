@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import dao.PublicDao;
 import dao.PublicDaoImpl;
 import dao.UserDaoImpl;
+import utils.EncDec;
 
 /**
  * Servlet implementation class UserController
@@ -53,6 +54,8 @@ public class UserController extends HttpServlet {
 			String pass=request.getParameter("pass");
 			String npass=request.getParameter("cpass");
 			String email=request.getParameter("emails");
+			pass = EncDec.encryptThisString(pass);
+			npass = EncDec.encryptThisString(npass);
 			System.out.println(email+" <> "+pass+" <> "+npass);
 			response.setContentType("text/html");
 			boolean b=udi.updatePassword(email, pass, npass);
@@ -62,6 +65,8 @@ public class UserController extends HttpServlet {
 			else
 				pdi.alertFail("Fail To Change Your Password", out);	
 		}
+		else
+			response.sendRedirect("index.jsp");
 	}
 
 }

@@ -15,13 +15,34 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import pojo.Admin;
 import pojo.User;
 import utils.DbCon;
+import utils.EncDec;
 public class AdminDaoImpl implements AdminDao{
 	static Connection con=DbCon.getConnection();
 	@Override
 	public boolean validAdmin(String email, String pass) {
+		pass = EncDec.encryptThisString(pass);
 		String query="select * from admin where email=? and password=?";
+		try {
+			PreparedStatement ps=con.prepareStatement(query);
+			ps.setString(1,email);
+			ps.setString(2,pass);
+			ResultSet rs=ps.executeQuery();
+			if(rs.next())return true;
+			return false;
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+	@Override
+	public boolean validSU(String email, String pass) {
+		pass = EncDec.encryptThisString(pass);
+		String query="select * from admin where email=? and password=? and type='su'";
 		try {
 			PreparedStatement ps=con.prepareStatement(query);
 			ps.setString(1,email);
@@ -56,10 +77,13 @@ public class AdminDaoImpl implements AdminDao{
 	public boolean approveUser(int pid) {
 		UserDaoImpl udi=new UserDaoImpl();
 		User user = udi.getUsers(pid);
+		String password= user.getPassword();
+		password = EncDec.encryptThisString(password);
 		if(con==null || user==null)return false;
 		try {
-			PreparedStatement ps=con.prepareStatement("update user set type='user' where email=?");
-			ps.setString(1, user.getEmail());
+			PreparedStatement ps=con.prepareStatement("update user set type='user',password=? where email=?");
+			ps.setString(2, user.getEmail());
+			ps.setString(1, password);
 			if(ps.executeUpdate()>0) {
 				new Approve(user);	 // Thread 
 				return true;
@@ -86,7 +110,8 @@ public class AdminDaoImpl implements AdminDao{
 	}
 	@Override
 	public boolean addAdmin(String email, String pass) {
-		String query="insert into admin (email,password) values(?,?)";
+		pass = EncDec.encryptThisString(pass);
+		String query="insert into admin (email,password,type) values(?,?,'norm')";
 		try {
 			PreparedStatement ps=con.prepareStatement(query);
 			ps.setString(1,email);
@@ -99,8 +124,8 @@ public class AdminDaoImpl implements AdminDao{
 		return false;
 	}
 	@Override
-	public boolean removeAdmin(String email) {
-		String query="delete from admin where email = ?";
+	public boolean removeAdmin(String email) {		
+		String query="delete from admin where email = ? and type !='su'";
 		try {
 			PreparedStatement ps=con.prepareStatement(query);
 			ps.setString(1,email);
@@ -111,14 +136,14 @@ public class AdminDaoImpl implements AdminDao{
 		}
 		return false;
 	}
-	@Override
+
 	public int countAdmin() {
 		try {
 			String que="select count(email) from admin";
 			PreparedStatement ps=con.prepareStatement(que);
 			ResultSet rs=ps.executeQuery();
 			if(rs.next())
-				return rs.getInt(1);
+				return rs.getInt(1)-1;
 			else
 				return 0;
 		}
@@ -131,6 +156,43 @@ public class AdminDaoImpl implements AdminDao{
 	public boolean rejectUser(User user) {
 		new Reject(user);
 		return true;
+	}
+	@Override
+	public List<Admin> getAdmins() {
+		List<Admin> ad=new ArrayList<Admin>();
+		try {
+			String que="select * from admin where type!= 'su'";
+			PreparedStatement ps=con.prepareStatement(que);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next())
+			{
+				ad.add(new Admin(rs.getString("email"),"",rs.getString("type")));
+			}
+			return ad;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	@Override
+	public boolean changePassword(String email,String oldpass, String pass, String type) {
+		pass = EncDec.encryptThisString(pass);
+		oldpass = EncDec.encryptThisString(oldpass);
+		String query="update admin set password=? where email=? and password=? and type=?";
+		try {
+			PreparedStatement ps=con.prepareStatement(query);
+			ps.setString(1,pass);
+			ps.setString(2,email);
+			ps.setString(3,oldpass);
+			ps.setString(4,type);
+			System.out.println("____"+pass +" \n "+oldpass+"_____");
+			return ps.executeUpdate()>0;
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
 	}
 	
 }

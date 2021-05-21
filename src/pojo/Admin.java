@@ -3,17 +3,27 @@ package pojo;
 public class Admin {
 	private String email;
 	private String password;
-	@Override
-	public String toString() {
-		return "Admin [email=" + email + ", password=" + password + "]";
+	private String type;
+	
+	public Admin(String email, String password, String type) {
+		super();
+		this.email = email;
+		this.password = password;
+		this.type = type;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	public Admin() {
 		
 	}
-	public Admin(String email, String password) {
-		super();
-		this.email = email;
-		this.password = password;
+	
+	@Override
+	public String toString() {
+		return "Admin [email=" + email + ", password=" + password + ", type=" + type + "]";
 	}
 	public String getEmail() {
 		return email;

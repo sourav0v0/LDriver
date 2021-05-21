@@ -11,6 +11,6 @@ public interface FileDao {
 	String getName(int id);
 	FFile getFileWithId(int fid);
 	int getId(String name) ;
-//	List<User> sharedWith(int fid);
-//	boolean addShare(int fid,int uid);
+	boolean deleteFile(int fid);
+
 }

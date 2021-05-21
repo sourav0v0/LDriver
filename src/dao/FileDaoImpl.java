@@ -92,36 +92,23 @@ public class FileDaoImpl implements FileDao{
 		}
 		return null;
 	}
-//	@Override
-//	public List<User> sharedWith(int fid) {
-//		try {
-//			PreparedStatement ps=con.prepareStatement("select * from share where fid=?");
-//			ps.setInt(1, fid);
-//			ResultSet rs=ps.executeQuery();
-//			List<User> rtn=new ArrayList<User>();
-//			UserDaoImpl udi=new UserDaoImpl();
-//			while(rs.next())
-//			{
-//				rtn.add(udi.getUsers(Integer.parseInt(rs.getString("pid"))));
-//			}
-//			return rtn;
-//		}
-//		catch(Exception ex) {
-//			return null;
-//		}
-//	}
-//	@Override
-//	public boolean addShare(int fid, int uid) {
-//		try {
-//			PreparedStatement ps=con.prepareStatement("insert into share (fid,uid)values(?,?)");
-//			ps.setInt(1, fid);
-//			ps.setInt(2, uid);
-//			return ps.executeUpdate()>0;
-//		}
-//		catch(Exception ex) {
-//			return false;
-//		}
-//	}
+
+	@Override
+	public boolean deleteFile(int fid) {
+		System.out.println(fid+" DELETENG ");
+		try {
+			ShareDaoImpl sdi=new ShareDaoImpl();
+			if(sdi.deleteAccess(fid)){;
+				PreparedStatement ps=con.prepareStatement("delete from files where fid=?");
+				ps.setInt(1, fid);
+				return ps.executeUpdate()>0;
+			}
+			return false;
+		}
+		catch(Exception ex) {
+			return false;
+		}
+	}
 	
 
 }

@@ -38,6 +38,7 @@ if(list.size()==0){ %>
   	<div class="card-body">
   	<div class="cart-text"><h1><%=fdi.getFileWithId(s).getName()%></h1></div>
     <h5 class="card-title">You have Shared Your File <%=sdi.typeOfAccess(s)%></h5>
+     <p class="card-text"><a href="FileController?action=deleteShareFile&fid=<%=fdi.getId(fdi.getFileWithId(s).getName()) %>" class="btn btn-danger">Delete</a></p> 
     <% ArrayList<Couple> temp= list.get(s);
      if(sdi.typeOfAccess(s).equals("private")) {%>
      <a class="btn btn-primary cart-footer" data-toggle="collapse" href="#collapseExample<%=s%>" role="button" aria-expanded="false" aria-controls="collapseExample<%=s%>">

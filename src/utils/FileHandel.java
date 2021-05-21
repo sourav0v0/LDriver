@@ -19,8 +19,13 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import dao.FileDaoImpl;
 
 public class FileHandel {
-	public final static String path= "C:\\Users\\soura\\Desktop\\files\\";
-	public boolean uploadFile(HttpServletRequest request) {
+	public final String path= "C:\\Users\\soura\\Desktop\\files\\";
+	public boolean uploadFile(HttpServletRequest request,String fileEmail) {
+		String path=this.path+fileEmail+"\\";
+		File cr = new File(path);
+		if (!cr.exists()) {
+		    cr.mkdirs();
+		}
 		FileDaoImpl fdi =new FileDaoImpl();
 		HttpSession session = request.getSession();
 		String email=(String) session.getAttribute("email");
@@ -40,12 +45,14 @@ public class FileHandel {
             }         	
             return true;
         }else
+   
             return false;
 	}
-	public boolean downloadFile(ServletContext ctx,HttpServletResponse response,String fileName) throws Exception   {
+	public boolean downloadFile(ServletContext ctx,HttpServletResponse response,String fileName,String fileEmail) throws Exception   {
+		String path=this.path+fileEmail+"\\";
 	        File file = new File(path+fileName	);
 	        if(!file.exists()){
-	            throw new FileNotFoundException();
+	            return false;
 	        }
 	        System.out.println("File location on server::"+file.getAbsolutePath());
 	        InputStream fis = new FileInputStream(file);
@@ -59,15 +66,17 @@ public class FileHandel {
 	        while((read = fis.read(bufferData))!= -1){
 	            os.write(bufferData, 0, read);
 	        }
+	    
 	        os.flush();
 	        os.close();
 	        fis.close();
 	        return true;
 	}
-	public void playContent(ServletContext ctx,HttpServletResponse response,String fileName) throws Exception   {
+	public void playContent(ServletContext ctx,HttpServletResponse response,String fileName,String fileEmail) throws Exception   {
+		String path=this.path+fileEmail+"\\";
         File file = new File(path+fileName);
         if(!file.exists()){
-            throw new FileNotFoundException();
+        	response.sendRedirect("Fail.jsp");
         }
         InputStream fis = new FileInputStream(file);
         ServletOutputStream os= response.getOutputStream();
@@ -79,6 +88,18 @@ public class FileHandel {
         os.flush();
         os.close();
         fis.close();
+	}
+	public boolean deleteFile(String fileEmail,String fileName)
+	{
+		String path=this.path+fileEmail+"\\";
+        File file = new File(path+fileName);
+        if(file.exists())
+        {
+        	System.out.println("cont");
+        	return file.delete();
+        }
+        return true;
+       
 	}
 	boolean valid(String name) {
 		String[] dis=name.split(".");

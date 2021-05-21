@@ -7,7 +7,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+  <script type="text/javascript">
+	function valid()
+	{
+		var name=document.getElementById("Name").value;
+		var email=document.getElementById("email").value;
+		var letters = /^[0-9]+$/;
+		var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+		console.log(name.match(letters));
+		console.log(email.match(filter));
+		if(name.match(letters))
+			   { 
+				 document.getElementById("errorName").innerHTML = "Please Enter Character";
+				 return false;
+			   }
+		if(!email.match(filter))
+		   { 
+			 document.getElementById("errorEmail").innerHTML = "Please Enter Valid Email";
+			 return false;
+		   }
+		return true;
+	}
+</script>
 </head>
 <body>
 <jsp:include page="header.jsp"/>
@@ -25,23 +48,25 @@
   </div>
   <h1 class="display-1">SIGNUP</h1>
   <div class="container" >
-    <form action="login"class="border-dark bg-light">
+    <form action="login"class="border-dark bg-light" onsubmit="return valid()">
       <div class="mb-3 row" >
         <label for="cid" class="col-sm-2 col-form-label">Company Id</label>
         <div class="col-sm-6">
-          <input type="text" name="cid" id="cid" placeholder="sapwrd12gLm"  class="form-control-plaintext rounded border border-dark" required>
+          <input type="number" name="cid" id="cid" placeholder="sapwrd12gLm"  class="form-control-plaintext rounded border border-dark" required>
         </div>
       </div>
       <div class="mb-3 row" >
         <label for="Mail" class="col-sm-2 col-form-label">Email</label>
         <div class="col-sm-6">
-          <input type="email" name="email"id="email"  placeholder="email@example.com" class="form-control-plaintext rounded border border-dark" required>
+          <input type="email" name="email" id="email"  placeholder="email@example.com" class="form-control-plaintext rounded border border-dark" required>
+          <p id="errorEmail"></p>
         </div>
       </div>
       <div class="mb-3 row" >
         <label for="Name" class="col-sm-2 col-form-label">Full Name</label>
         <div class="col-sm-6">
           <input type="text" name="name" id="Name" placeholder="Sourav Prajapati" class="form-control-plaintext rounded border border-dark" required>
+          <p id="errorName"></p>
         </div>
       </div>
       
@@ -53,4 +78,3 @@
   <jsp:include page="footer.html"></jsp:include>
 </body>
 </html>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>

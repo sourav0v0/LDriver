@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import pojo.FFile;
 import pojo.User;
 import utils.DbCon;
+import utils.EncDec;
 public class UserDaoImpl implements UserDao{
 	private final Connection con;
 	public UserDaoImpl() {
@@ -17,6 +19,22 @@ public class UserDaoImpl implements UserDao{
 	}
 	@Override
 	public boolean addUser(User user) {
+		if(con==null)return false;
+		user.setPassword(EncDec.encryptThisString(user.getPassword()));
+		try {
+			PreparedStatement ps=con.prepareStatement("insert into user(pid,email,name,password,type) values (?,?,?,?,?)");
+			ps.setInt(1,user.getPid());
+			ps.setString(2,user.getEmail());
+			ps.setString(3,user.getName());
+			ps.setString(4,user.getPassword());
+			ps.setString(5,user.getType());
+			return ps.executeUpdate()>0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	public boolean addUserNonEnc(User user) {
 		if(con==null)return false;
 		try {
 			PreparedStatement ps=con.prepareStatement("insert into user(pid,email,name,password,type) values (?,?,?,?,?)");
@@ -31,11 +49,11 @@ public class UserDaoImpl implements UserDao{
 		}
 		return false;
 	}
-
 	@Override
 	public boolean updatePassword(String email, String pass, String newPass) {
 		try {
-			if(!validUser(email, pass))return false;
+			if(!validUserUnEncyp(email, pass))return false;
+			System.out.println(" passed ");
 			PreparedStatement ps=con.prepareStatement("update user  set password=? where email=?");
 			ps.setString(2, email);
 			ps.setString(1,newPass);
@@ -50,7 +68,7 @@ public class UserDaoImpl implements UserDao{
 	@Override
 	public List<User> getUsers() {
 		try {
-			PreparedStatement ps=con.prepareStatement("select * from user");
+			PreparedStatement ps=con.prepareStatement("select * from user where type = 'user'");
 			ResultSet rs=ps.executeQuery();
 			List<User> rtn=new ArrayList<User>();
 			while(rs.next()) {
@@ -92,8 +110,28 @@ public class UserDaoImpl implements UserDao{
 		}
 		return null;
 	}
+	public boolean validUserUnEncyp(String email, String pass) {
+		try {
+			PreparedStatement ps=con.prepareStatement("select * from user where email=?");
+			ps.setString(1, email);
+			ResultSet rs=ps.executeQuery();
+			if(rs==null)return false;
+			if(rs.next()) {
+			String fp=rs.getString("password");
+			if(fp==null)return false;
+			System.out.println(fp + " we have "+pass);
+			if(fp.equals(pass))return true;
+			}
+			return false;
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
 	@Override
 	public boolean validUser(String email, String pass) {
+			pass = EncDec.encryptThisString(pass);
 		try {
 			PreparedStatement ps=con.prepareStatement("select * from user where email=?");
 			ps.setString(1, email);
@@ -137,11 +175,11 @@ public class UserDaoImpl implements UserDao{
 	}
 	@Override
 	public boolean requestAdmin(User usr) { 
-		String pass=getSaltString();
+		String pass= getSaltString();
 		usr.setType("request");
 		usr.setPassword(pass);
 		try {
-			return addUser(usr);
+			return addUserNonEnc(usr);
 		}
 		catch(Exception x) {
 			return false;
@@ -184,6 +222,11 @@ public class UserDaoImpl implements UserDao{
 	public boolean removeUser(User user) {
 		if(con==null)return false;
 		try {
+			ShareDaoImpl sdi=new ShareDaoImpl();
+			sdi.deleteUserShare(user.getEmail());
+			FileDaoImpl fdi=new FileDaoImpl();
+			for(FFile f :fdi.getFiles(user.getEmail()))
+					fdi.deleteFile(f.getId());
 			PreparedStatement ps=con.prepareStatement("delete from user where pid=?");
 			ps.setInt(1,user.getPid());
 			return ps.executeUpdate()>0;
@@ -192,4 +235,17 @@ public class UserDaoImpl implements UserDao{
 		}
 		return false;
 	}
+	@Override
+	public boolean removeUserById(int fid) {
+		if(con==null)return false;
+		try {
+			PreparedStatement ps=con.prepareStatement("delete from user where pid=?");
+			ps.setInt(1,fid);
+			return ps.executeUpdate()>0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 }

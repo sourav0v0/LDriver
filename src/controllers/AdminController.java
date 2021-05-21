@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.AdminDaoImpl;
+import dao.PublicDaoImpl;
 import dao.UserDaoImpl;
 import pojo.User;
 
@@ -54,16 +55,24 @@ public class AdminController extends HttpServlet {
 			}
 			response.sendRedirect("index.jsp");
 		}
-		
+		else if(action!=null && action.equals("deleteUser")) {
+			int pid=Integer.parseInt(request.getParameter("pid"));
+			PublicDaoImpl pdi=new PublicDaoImpl();
+			if(udi.removeUserById(pid))
+				pdi.alertSuccess("User Have Been removed", response.getWriter(),"RemoveUser.jsp");
+			else {
+				pdi.alertFail("User Have Been removed", response.getWriter(),"RemoveUser.jsp");
+			}
+		}
+
 		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req,resp);
 	}
 
 }

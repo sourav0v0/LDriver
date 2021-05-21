@@ -2,6 +2,7 @@ package dao;
 
 import java.util.List;
 
+import pojo.FFile;
 import pojo.Share;
 import pojo.User;
 
@@ -12,6 +13,7 @@ public interface ShareDao {
 	// fetch for particular user with userID
 	// Deleting File shared
 	 /*change Premission -> EXTRA*/
+	boolean deleteUserShare(String share);
 	boolean publicShare(int fid,String frm_user);
 	boolean privateShare(int fid,String frm_user,String[] user);
     boolean validEmail(int fid,String gmail);
@@ -21,5 +23,6 @@ public interface ShareDao {
     List<Share> getSharedFileUserFile(String email,int fileID);
     boolean deleteAccess(int fid);
     boolean deleteAccessUsingSid(int sid);
-    
+    List<FFile> sharedWithUs(String email);
+    String getShareUser(int id);
 }

@@ -37,6 +37,7 @@ if(type !=null && type.equals("employee")){ %>
         <a class="nav-link" href="FileController">List Of Files Uploaded</a>
         <a class="nav-link" href="UploadFile.jsp">Upload Files</a>
         <a class="nav-link" href="FileController?action=SharedFile">Shared Files</a>
+        <a class="nav-link" href="ShareWithUs.jsp">Files Shared With Me</a>
         <a class="nav-link" href="changePassword.jsp">Change Password</a>
         <a class="nav-link" href="Main?action=logout">Logout</a>
       </div>
@@ -54,8 +55,28 @@ if(type !=null && type.equals("employee")){ %>
       <div class="navbar-nav">  
         <a class="nav-link " aria-current="page" href="index.jsp">Home</a>
         <a class="nav-link" href="AdminController?action=list">Process Requested User</a>
-        <a class="nav-link" href="#">Add Admin</a>
-        <a class="nav-link" href="#">Remove Admin</a>
+        <a class="nav-link" href="AdminChangePassword.jsp">Change Password</a>
+        <a class="nav-link" href="Main?action=logout">Logout</a>
+      </div>
+    </div>
+   
+  </div>
+</nav>
+<% }else if (type !=null && type.equals("suadmin")){%>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">LDRIVE</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">  
+        <a class="nav-link " aria-current="page" href="index.jsp">Home</a>
+        <a class="nav-link" href="AdminController?action=list">Process Requested User</a>
+        <a class="nav-link" href="addAdmin.jsp">Add Admin</a>
+        <a class="nav-link" href="removeAdmin.jsp">Remove Admin</a>
+        <a class="nav-link" href="RemoveUser.jsp">Remove User</a>
+        <a class="nav-link" href="AdminChangePassword.jsp">Change Password</a>
         <a class="nav-link" href="Main?action=logout">Logout</a>
       </div>
     </div>
