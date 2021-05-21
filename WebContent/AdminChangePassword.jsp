@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Change Password</title>
+<link rel="icon" href="css/logo_4.ico">
 <script type="text/javascript">
 function vali()
 {

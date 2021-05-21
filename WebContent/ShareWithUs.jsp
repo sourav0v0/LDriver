@@ -9,7 +9,8 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Shared With me</title>
+<link rel="icon" href="css/logo_4.ico">
 </head>
 <body>
 <jsp:include page="header.jsp"></jsp:include>

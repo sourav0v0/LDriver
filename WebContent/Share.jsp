@@ -7,7 +7,8 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Share Page</title>
+<link rel="icon" href="css/logo_4.ico">
 <%
 UserDaoImpl udi=new UserDaoImpl();
 List<User> user=udi.getUsers();

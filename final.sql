@@ -24,7 +24,8 @@ DROP TABLE IF EXISTS `admin`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `admin` (
   `email` varchar(50) NOT NULL,
-  `password` varchar(30) DEFAULT NULL,
+  `password` varchar(40) DEFAULT NULL,
+  `type` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -35,7 +36,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES ('s@g.c','1234');
+INSERT INTO `admin` VALUES ('atulparte@company.com','7c222fb2927d828af22f592134e8932480637c0d','norm'),('s@g.c','88ea39439e74fa27c09a4fc0bc8ebe6d00978392','su');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,7 +54,7 @@ CREATE TABLE `files` (
   PRIMARY KEY (`fid`),
   KEY `email` (`email`),
   CONSTRAINT `files_ibfk_1` FOREIGN KEY (`email`) REFERENCES `user` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,8 +63,41 @@ CREATE TABLE `files` (
 
 LOCK TABLES `files` WRITE;
 /*!40000 ALTER TABLE `files` DISABLE KEYS */;
-INSERT INTO `files` VALUES (16,'atulparte345@gmail.com','samp.mkv'),(17,'souravprajapati31@gmail.com','Transaction Error.jpeg'),(18,'souravprajapati31@gmail.com','samp.mkv'),(19,'souravprajapati31@gmail.com','Untitled.png');
+INSERT INTO `files` VALUES (38,'souravprajapati31@gmail.com','samp.mkv'),(39,'souravprajapati31@gmail.com','Transaction Error.jpeg'),(41,'atulparte345@gmail.com','Billing.pptx');
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `share`
+--
+
+DROP TABLE IF EXISTS `share`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `share` (
+  `fid` int(11) DEFAULT NULL,
+  `share` varchar(50) DEFAULT NULL,
+  `user` varchar(50) DEFAULT NULL,
+  `type` varchar(50) DEFAULT NULL,
+  `sid` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`sid`),
+  KEY `share` (`share`),
+  KEY `user` (`user`),
+  KEY `fid` (`fid`),
+  CONSTRAINT `share_ibfk_1` FOREIGN KEY (`share`) REFERENCES `user` (`email`),
+  CONSTRAINT `share_ibfk_2` FOREIGN KEY (`user`) REFERENCES `user` (`email`),
+  CONSTRAINT `share_ibfk_3` FOREIGN KEY (`fid`) REFERENCES `files` (`fid`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `share`
+--
+
+LOCK TABLES `share` WRITE;
+/*!40000 ALTER TABLE `share` DISABLE KEYS */;
+INSERT INTO `share` VALUES (38,'atulparte345@gmail.com','souravprajapati31@gmail.com','private',30);
+/*!40000 ALTER TABLE `share` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -76,7 +110,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `email` varchar(50) NOT NULL DEFAULT '',
   `name` varchar(20) DEFAULT NULL,
-  `password` varchar(20) DEFAULT NULL,
+  `password` varchar(40) DEFAULT NULL,
   `pid` int(11) DEFAULT NULL,
   `type` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`email`),
@@ -90,7 +124,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('atulparte345@gmail.com','Atul Parte','VWA7SSV6DY',12,'user'),('souravprajapati31@gmail.com','Sourav','sourav',1,'user');
+INSERT INTO `user` VALUES ('atulparte345@gmail.com','Atul Parte','f7c3bc1d808e04732adf679965ccc34ca7ae3441',2,'user'),('souravprajapati31@gmail.com','Sourav Prajapati','88ea39439e74fa27c09a4fc0bc8ebe6d00978392',1,'user');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -103,4 +137,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-14 13:16:14
+-- Dump completed on 2021-05-22  0:27:59
